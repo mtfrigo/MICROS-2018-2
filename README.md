@@ -1,3 +1,3 @@
-# MICROS-2018-2
+# Microcontroladores 2018/2
 
 Ola
