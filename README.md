@@ -61,6 +61,131 @@ https://moodle.ece.ufrgs.br/course/view.php?id=10
 
 98:4F:EE:01:EF:34	galileo24
 
+#Utilidades
+
+## Conectar na galileo como root
+
+```
+ssh root@<galileoXX>
+passwd
+useradd -c <LOGIN> -s /bin/bash -m <LOGIN>
+passwd <LOGIN>
+exit
+```
+
+## Adicionar usuário
+
+```
+useradd -c "Nome" -s /bin/bash -m <LOGIN>
+userdel -r <LOGIN> (caso criado errado)
+passwd <LOGIN>
+exit
+ssh <LOGIN>@<galileoXX>
+echo "export PATH=.:$PATH" >> .profile
+exit
+```
+
+## Adicionar grupo
+
+```
+groupadd -r <NOME_DO_GRUPO>
+```
+
+## Adicionar membro ao grupo 
+
+```
+groupmems -g <NOME_DO_GRUPO> -a <LOGIN>
+```
+
+## Adicionar scripts de inicialização (script na galileo)
+```
+cp ~/<NOME_SCRIPT> /etc/init.d
+chmod +x /etc/init.d/<NOME_SCRIPT>
+update-rc.d <NOME_SCRIPT> defaults
+reboot
+update-rc.d <NOME_SCRIPT> remove -> feito no fim do lab
+```
+
+## Configurar o host para o uso da Galileo
+
+Levando em consideração o uso do script *iss_setup.sh*, faça o seguinte comando: 
+```
+source iss_setup.sh
+```
+
+## Configurar o compilador para o compilador nativo
+
+```
+export CROSS_COMPILE=
+```
+
+## Copiar arquivo para a Galileo
+
+Levando em consideração que o arquivo está no HOST!
+```
+scp <FILE> <LOGIN>@<galileoXX>:
+```
+
+ou
+
+Levando em consideração que o arquivo está na Galileo!
+```
+scp <LOGIN>@<galileoXX>:<FILE> <path_host>
+```
+
+## Depuração Remota
+
+Executando na Galileo
+HOST = nome do host
+PORT = porta TCP usada para comunicação (escolher porta acima de 1024)
+```
+gdbserver <HOST>:<PORT> <PROGRAMA> 
+```
+
+Executando no Host
+TARGET = nome da galileo
+PORT = porta TCP usada para comunicação (escolher porta acima de 1024)
+```
+kdgb -r <TAGET>:<PORT> <PROGRAMA> 
+```
+
+## Instalação do ambiente em máquinas fora do Lab
+
+
+* Baixe e descompacte o arquivo como o Intel System Studio IoT Edition no
+diretório /opt:
+
+```
+cd /opt
+tar -xjf iss-iot-linux_03-24-16.tar.bz2
+rm iss-iot-linux_03-24-16.tar.bz2
+```
+
+* Ajuste as permissões dos arquivos descompactados:
+```
+chown -R root.root iss-iot-linux
+chmod -R go-w iss-iot-linux
+chmod -R -s iss-iot-linux
+```
+
+* Ainda no diretório /opt, crie um link para a versão atual do Intel System
+Studio Iot Edition:
+```
+ln -s iss-iot-linux iot-devkit
+```
+
+* Crie um link para o diretório das ferramentas de desenvolvimento:
+```
+cd iot-devkit
+ln -s devkit-x86 1.7.2
+```
+
+* Execute a relocação das ferramentas de desenvolvimento:
+```
+INSTALL_DIR=‘pwd‘ sdk-relocator/relocate_sdk.sh
+```
+
+* !!os nomes dos links tem que ser exatamente estes!!
 # Lab 01
 
 Passo a passo lab 01:
@@ -76,7 +201,28 @@ Passo a passo lab 01:
 * incluir diretorio no PATH `echo "export PATH=.:$PATH" >> .profile`
 * sair da galileo `exit`
 
-cansei na real
+# Lab 02 - Ambiente de Desenvolvimento
+
+* configurar as variáveis de ambiente do seu usuário para utilizar o Intel System Studio IoT Edition 
+* `export DEVKIT=/opt/iot-devkit/devkit-x86` 
+* `export PATH=$PATH:$DEVKIT/sysroots/x86_64-pokysdk-linux/usr/bin/i586-poky-linux`
+* esses comandos podem ser inseridos no arquivo ~/.profile ou num script
+* caso for feito um script (com o nome iss_setup.sh, por exemplo) usar o comando 
+* `source iss_setup.sh`
+* para compilar o programa para a Galileo, deve-se configurar a variavel de ambiente a seguir
+* `export CROSS_COMPILE=i586-poky-linux-`
+* esta variável também pode ser inserida no arquivo ~/.profile ou iss_setup.sh
+* `make`
+* transfira o programa compilado para a galileo com `scp hello <LOGIN>@<galileoXX>:`
+* faça login na galileo `ssh <LOGIN>@<galileoXX>` 
+* execute o programa
+* 
+
+
+
+
+
+
 
 
 
