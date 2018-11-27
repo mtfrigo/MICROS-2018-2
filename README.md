@@ -119,14 +119,14 @@ source iss_setup.sh
 export CROSS_COMPILE=
 ```
 
-## Copiar arquivo para a Galileo
+## Copiar arquivo do host para a Galileo
 
 Levando em consideração que o arquivo está no HOST!
 ```
 scp <FILE> <LOGIN>@<galileoXX>:
 ```
 
-ou
+## Copiar arquivo da Galileo para o Host
 
 Levando em consideração que o arquivo está na Galileo!
 ```
@@ -216,7 +216,7 @@ Passo a passo lab 01:
 * transfira o programa compilado para a galileo com `scp hello <LOGIN>@<galileoXX>:`
 * faça login na galileo `ssh <LOGIN>@<galileoXX>` 
 * execute o programa
-* 
+* fazer a depuração 
 
 
 
