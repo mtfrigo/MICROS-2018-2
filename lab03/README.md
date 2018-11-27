@@ -79,7 +79,7 @@ IO13 é o LED fixo que está ao lado do conector USB host.
 * Copiar o arquivo eng10032lab03_2 para o diretorio /etc/init.d, tornar o script executável e configurar para o Linux chamar o script durante a inicialização
 
 No host:
-`scp eng10032lab03_1 <galileoXX>:`
+`scp eng10032lab03_2 <galileoXX>:`
 
 Na galileo
 ```
@@ -94,5 +94,24 @@ reboot
 
 * COMO DESCOBRIR EM QUAL PINO DO SHIELD É O IO3? 
 
-* 
+ACHO que no shield D03 = IO3
 
+* Copiar o arquivo eng10032lab03_3 para o diretorio /etc/init.d, tornar o script executável e configurar para o Linux chamar o script durante a inicialização
+
+No host:
+`scp eng10032lab03_3 <galileoXX>:`
+
+Na galileo
+```
+update-rc.d -f eng10032lab03_2 remove
+cp ~/eng10032lab03_3 /etc/init.d
+chmod +x /etc/init.d/eng10032lab03_3
+update-rc.d eng10032lab03_3 defaults
+reboot
+```
+
+* Ligar o LED na porta D03 do shield e o pushbutton na porta D02 do shield e verificar o funcionamento
+
+* Ao final do experimento não esquecer de dar o seguinte commando
+
+`update-rc.d -f eng10032lab03_3 remove`
