@@ -1,6 +1,6 @@
 /*
   callasm.c: Calls assembly functions for sum and difference.
-  
+
   Copyright (c) 2016 Walter Fetter Lages <w.fetter@ieee.org>
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ int main(int argc,char *argv[])
 	int b;
 	int s;
 	int d;
-	
+
 	if(argc != 3)
 	{
 		printf("Usage:\n\t%s <int> <int>\n",argv[0]);
@@ -37,11 +37,11 @@ int main(int argc,char *argv[])
 
 	a=atoi(argv[1]);
 	b=atoi(argv[2]);
-	
+
 	s=sum(a,b);
 	d=diff(&a,&b);
-	
+
 	printf("%d+%d=%d\n%d-%d=%d\n",a,b,s,a,b,d);
-	
+
 	return 0;
 }
