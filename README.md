@@ -11,7 +11,7 @@ http://www.ece.ufrgs.br/~fetter/eng10032/
 
 https://moodle.ece.ufrgs.br/course/view.php?id=10
 
-#Utilidades
+# Utilidades
 
 ## Conectar na galileo como root
 
@@ -41,7 +41,7 @@ exit
 groupadd -r <NOME_DO_GRUPO>
 ```
 
-## Adicionar membro ao grupo 
+## Adicionar membro ao grupo
 
 ```
 groupmems -g <NOME_DO_GRUPO> -a <LOGIN>
@@ -58,7 +58,7 @@ update-rc.d <NOME_SCRIPT> remove -> feito no fim do lab
 
 ## Configurar o host para o uso da Galileo
 
-Levando em consideração o uso do script *iss_setup.sh*, faça o seguinte comando: 
+Levando em consideração o uso do script *iss_setup.sh*, faça o seguinte comando:
 ```
 source iss_setup.sh
 ```
@@ -89,14 +89,14 @@ Executando na Galileo
 HOST = nome do host
 PORT = porta TCP usada para comunicação (escolher porta acima de 1024)
 ```
-gdbserver <HOST>:<PORT> <PROGRAMA> 
+gdbserver <HOST>:<PORT> <PROGRAMA>
 ```
 
 Executando no Host
 TARGET = nome da galileo
 PORT = porta TCP usada para comunicação (escolher porta acima de 1024)
 ```
-kdgb -r <TAGET>:<PORT> <PROGRAMA> 
+kdgb -r <TAGET>:<PORT> <PROGRAMA>
 ```
 
 ## Instalação do ambiente em máquinas fora do Lab
@@ -182,4 +182,3 @@ Para as portas que controlam multiplexadores ou direção dos buffers também é
 Por default, os arquivos em /sys/class/gpio só podem ser escritos pelo superusuário.
 A configuração destas e o ajuste das permissões será feito através dos scripts de inicialização
 Será criado o grupo gpio e as permissões serão ajustadas para que os usuários membros deste grupo possam acessar os arquivos adequados em /sys/class/gpio.
-

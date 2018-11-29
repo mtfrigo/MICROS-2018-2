@@ -13,15 +13,15 @@ LDFLAGS=$(LIBDIR) $(LIBS)
 all: $(TARGET)
 
 $(TARGET): $(SRCS:.c=.o)
-		   $(CC) -o $@ $^ $(LDFLAGS)
+	$(CC) -o $@ $^ $(LDFLAGS)
 
- %.o: %.c
- 		   $(CC) $(CFLAGS) -c -o $@ $<
+%.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
 
- -include $(SRCS:.c=.d)
+-include $(SRCS:.c=.d)
 
- clean:
- 	rm -f *~ *.bak *.o *.d
+clean:
+	rm -f *~ *.bak *.o *.d
 
- distclean: clean
- 	rm -f $(TARGET)
+distclean: clean
+	rm -f $(TARGET)

@@ -3,20 +3,20 @@
 
 int main(int argc,char *argv[])
 {
-    char state=’0’;
-    int fd;
+	char state='0';
+	int fd;
 
-    fd=open("/sys/class/gpio/gpio7/value",O_WRONLY);
+	fd=open("/sys/class/gpio/gpio7/value",O_WRONLY);
 
-    for(;;)
-    {
-        lseek(fd,0,SEEK_SET);
-        write(fd,&state,sizeof state);
-        sleep(1);
-        state^=’0’^’1’;
-    }
+	for(;;)
+	{
+		lseek(fd,0,SEEK_SET);
+		write(fd,&state,sizeof state);
+		sleep(1);
+		state^='0'^'1';
+	}
 
-    close(fd);
+	close(fd);
 
-    return 0;
+	return 0;
 }
