@@ -20,14 +20,14 @@ Uma vez habilitada, a interrupção pode ser recebida por um programa no espaço
 
 ## Experimento
 
-* Executar o Makefile da pasta lib para gerar a biblioteca
+* Executar o Makefile da pasta lib para gerar a biblioteca.
 
 * Olhando a tabela, verifica-se que o IO4 tem o gpio6 como pino de interrupções
 
 * O script de inicialização esta na pasta init e deve ser configurado
 
 No host:
-`scp eng10032lab05_1 <galileoXX>:`
+`scp eng10032lab05_1 root@<galileoXX>:`
 
 Na galileo
 ```
