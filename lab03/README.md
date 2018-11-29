@@ -76,6 +76,10 @@ reboot
 
 IO13 é o LED fixo que está ao lado do conector USB host.
 
+* Voltar para o host, compilar o programa da pasta blink com `make` e mandar o arquivo compilado para o usuário da galileo com `scp blink <LOGIN>@<galileoXX>:`
+
+* Logar na galileo com seu login e testar o código com `./blink`
+
 * Copiar o arquivo eng10032lab03_2 para o diretorio /etc/init.d, tornar o script executável e configurar para o Linux chamar o script durante a inicialização
 
 No host:
@@ -92,9 +96,13 @@ reboot
 
 * Verifique que o script da listagem 2 configura o pino IO3 como GPIO e como saída e portanto capaz de acionar o LED.
 
-* COMO DESCOBRIR EM QUAL PINO DO SHIELD É O IO3? 
+* QUAL PINO É O IO3? 
 
-ACHO que no shield D03 = IO3
+No shield D03 = IO3
+
+* Voltar para o host, compilar o programa da pasta blink2 com `make` e mandar o arquivo compilado para o usuário da galileo com `scp blink <LOGIN>@<galileoXX>:`
+
+* Logar na galileo com seu login e testar o código com `./blink`
 
 * Copiar o arquivo eng10032lab03_3 para o diretorio /etc/init.d, tornar o script executável e configurar para o Linux chamar o script durante a inicialização
 
@@ -109,6 +117,10 @@ chmod +x /etc/init.d/eng10032lab03_3
 update-rc.d eng10032lab03_3 defaults
 reboot
 ```
+
+* Voltar para o host, compilar o programa da pasta blink3 com `make` e mandar o arquivo compilado para o usuário da galileo com `scp blink <LOGIN>@<galileoXX>:`
+
+* Logar na galileo com seu login e testar o código com `./blink`
 
 * Ligar o LED na porta D03 do shield e o pushbutton na porta D02 do shield e verificar o funcionamento
 

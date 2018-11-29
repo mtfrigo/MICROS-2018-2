@@ -1,5 +1,5 @@
 TARGET=libgalileo2.a
-SRCS=pputs.c pgets.c i2c_write_reg.c i2c_read_reg.c
+SRCS=pputs.c pgets.c i2c_write_reg.c
 
 FLAGS=-O2 -Wall -MMD
 INCLUDE=-I. -I../include
@@ -14,16 +14,16 @@ CCARFLAGS=-crvs
 
 all: $(TARGET)
 
-$(TARGET): 	$(SRCS:.c=.o)
-			$(CCAR) $(CCARFLAGS) $@ $^
+$(TARGET): $(SRCS:.c=.o)
+	$(CCAR) $(CCARFLAGS) $@ $^ 
 
 %.o: %.c
-			$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 -include $(SRCS:.c=.d)
 
 clean:
-			rm -f *~ *.bak *.o *.d
+	rm -f *~ *.bak *.o *.d
 
 distclean: clean
-			rm -f $(TARGET)
+	rm -f $(TARGET)
