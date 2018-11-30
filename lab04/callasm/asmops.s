@@ -1,6 +1,6 @@
 /*
   asmops.s: sum and difference in Assembly.
-  
+
   Copyright (c) 2016 Walter Fetter Lages <w.fetter@ieee.org>
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 	.intel_syntax noprefix
 
 	.text
-	
+
 	.global	sum
 	.global	diff
 
