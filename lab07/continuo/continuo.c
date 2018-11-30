@@ -2,7 +2,7 @@
   continuous.c: Reads a pontenciometer, a light sensor, a sound sensor and a
   temperature sensor on Galileo Gen2 ADC_AD0, ADC_AD1, ADC_AD2 e ADC_AD3 in
   continuous mode.
-  
+
   Copyright (c) 2016 Walter Fetter Lages <w.fetter@ieee.org>
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -52,7 +52,7 @@ int main(int argc,char * argv[])
     int samples;
     FILE *file;
     char path_str[80];
-    
+
     if(argc != 2)
     {
         puts("Usage: continuous <output_file>\n");
@@ -60,7 +60,7 @@ int main(int argc,char * argv[])
     }
 
     pputs("/sys/bus/iio/devices/iio:device0/buffer/enable","0");
-    //Itera sobre os 4 canais 
+    //Itera sobre os 4 canais
     for(i=0;i < 4;i++)
     {
         //Manha pra pegar o path diferente a cada iteração
@@ -70,7 +70,7 @@ int main(int argc,char * argv[])
         //A escala do canal i passa a ser a que está no /in_voltage<n>_scale
         //Divide por 1000 porque está em milissegundos
         scale[i]=atof(data_str)/1000.0;
-        
+
         //Dá o enable pra cada canal
         snprintf(path_str,sizeof path_str,"/sys/bus/iio/devices/iio:device0/scan_elements/in_voltage%d_en",i);
         pputs(path_str,"1");
@@ -80,18 +80,18 @@ int main(int argc,char * argv[])
     //Indica que vai coletar 1000 amostras por buffer (DATA_POINTS = 1000)
     snprintf(data_str,sizeof data_str,"%d",DATA_POINTS);
     pputs("/sys/bus/iio/devices/iio:device0/buffer/length",data_str);
-    
+
 #ifdef TRIG_SYSFS //Usado em testes automatizados
     //Se o TRIG_SYSFS já estiver setado, só indica o trigger atual
     pgets(data_str,sizeof data_str,"/sys/bus/iio/devices/trigger0/name");
-    pputs("/sys/bus/iio/devices/iio:device0/trigger/current_trigger",data_str);
+    pputs("/sys/bus/iio/devices/iio:device0/trigger/current_trigger",data_namestr);
 #else
     pgets(data_str,sizeof data_str,"/sys/bus/iio/devices/trigger1/name");
     pputs("/sys/bus/iio/devices/iio:device0/trigger/current_trigger",data_str);
     //Frequência de trigger é o inverso do 1ms programado
     snprintf(data_str,sizeof data_str,"%d",(int)round(1.0/SAMPLING_PERIOD));
     pputs("/sys/bus/iio/devices/trigger1/frequency",data_str);
-#endif        
+#endif
     //Dá enable no buffer
     pputs("/sys/bus/iio/devices/iio:device0/buffer/enable","1");
 
@@ -107,9 +107,9 @@ int main(int argc,char * argv[])
     //Fica off por 1 segundo
     sleep(ceil(DATA_POINTS*SAMPLING_PERIOD));
 #endif
-    
+
     pputs("/sys/bus/iio/devices/iio:device0/buffer/enable","0");
-    
+
     pputs("/sys/bus/iio/devices/iio:device0/trigger/current_trigger","\n");
 
     if((fd=open("/dev/iio:device0",O_RDONLY)) < 0)
@@ -120,10 +120,10 @@ int main(int argc,char * argv[])
     //Lê as amostras do sensores
     samples=read(fd,data,sizeof data)/sizeof(struct sensors);
     close(fd);
-    
+
     //Reseta o buffer
     pputs("/sys/bus/iio/devices/iio:device0/buffer/length","2");
-    
+
     for(i=0;i < 4;i++)
     {
         //Desabilita todos os canais
@@ -132,7 +132,7 @@ int main(int argc,char * argv[])
     }
     //Reseta a timestamp
     pputs("/sys/bus/iio/devices/iio:device0/scan_elements/in_timestamp_en","0");
-    
+
     if((file=fopen(argv[1],"w")) == NULL)
     {
         perror("Opening output file:");
@@ -144,8 +144,8 @@ int main(int argc,char * argv[])
         data[i].pot=bswap_16(data[i].pot);
         data[i].light=bswap_16(data[i].light);
         data[i].sound=bswap_16(data[i].sound);
-        data[i].temp=bswap_16(data[i].temp);                
-        
+        data[i].temp=bswap_16(data[i].temp);
+
         fprintf(file,"%f\t%f\t%f\t%f\t%f\n",
                 data[i].pot*scale[0],
                 data[i].light*scale[1],
@@ -154,6 +154,6 @@ int main(int argc,char * argv[])
                 (data[i].timestamp-data[0].timestamp)*1e-9);
     }
     fclose(file);
-        
+
         return 0;
 }

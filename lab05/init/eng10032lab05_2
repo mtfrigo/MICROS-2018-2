@@ -1,0 +1,65 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          eng10032lab05_1
+# Required-Start:
+# Should-Start:
+# Required-Stop:
+# Default-Start:     S
+# Default-Stop:
+# Short-Description: Configures GPIO and interrupts for Lab 05.
+# Description:       Configures GPIO and interrupts for Lab 05.
+### END INIT INFO
+
+case "$1" in
+    start|restart|force-reload)
+   	# IO3 = gpio62
+
+	if [ ! -d /sys/class/gpio/gpio62 ] ; then
+	    echo -n "62" > /sys/class/gpio/export
+	fi
+	echo -n "in" > /sys/class/gpio/gpio62/direction
+	chgrp gpio /sys/class/gpio/gpio62/value
+	chmod g+r /sys/class/gpio/gpio62/value
+	chgrp gpio /sys/class/gpio/gpio62/edge
+	chmod g+rw /sys/class/gpio/gpio62/edge
+
+
+	# gpio17 = 0 => pull-up
+    if [ ! -d /sys/class/gpio/gpio17 ] ; then
+	    echo -n "17" > /sys/class/gpio/export
+	fi
+	echo -n "out" > /sys/class/gpio/gpio17/direction
+	echo -n "1" > /sys/class/gpio/gpio17/value
+
+    if [ ! -d /sys/class/gpio/gpio76 ] ; then
+	    echo -n "76" > /sys/class/gpio/export
+	fi
+	echo -n "out" > /sys/class/gpio/gpio76/direction
+	echo -n "0" > /sys/class/gpio/gpio76/value
+
+    if [ ! -d /sys/class/gpio/gpio64 ] ; then
+	    echo -n "64" > /sys/class/gpio/export
+	fi
+	echo -n "out" > /sys/class/gpio/gpio64/direction
+	echo -n "0" > /sys/class/gpio/gpio64/value
+
+
+	;;
+    stop)
+	echo -n "in" > /sys/class/gpio/gpio17/direction
+	echo -n "62" > /sys/class/gpio/unexport
+	echo -n "17" > /sys/class/gpio/unexport
+	echo -n "64" > /sys/class/gpio/unexport
+	echo -n "76" > /sys/class/gpio/unexport
+	;;
+    status)
+    	ls -d /sys/class/gpio/gpio*
+	;;
+    *)
+	echo -n "Usage: $0 "
+	echo "{start|stop|restart|force-reload|status}"
+	exit 1
+	;;
+esac
+
+exit 0

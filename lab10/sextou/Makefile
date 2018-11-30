@@ -1,12 +1,7 @@
-TARGET=continuo
+TARGET=clocklcd
 SRCS=$(TARGET).c
 
-# Using hardware trigger
-FLAGS=-Wall -g -MMD
-
-# Using software trigger
-#FLAGS=-Wall -g -MMD -DTRIG_SYSFS
-
+FLAGS=-O2 -Wall -g -MMD
 INCLUDE=-I. -I../include
 LIBDIR=-L../lib
 LIBS=-lgalileo2
@@ -17,7 +12,7 @@ LDFLAGS=$(LIBDIR) $(LIBS)
 
 all: $(TARGET)
 
-$(TARGET): $(SRCS:.c=.o) ../lib/libgalileo2.a
+$(TARGET): $(SRCS:.c=.o)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 %.o: %.c

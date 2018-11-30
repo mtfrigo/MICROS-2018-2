@@ -1,12 +1,7 @@
-TARGET=continuo
+TARGET=grito
 SRCS=$(TARGET).c
 
-# Using hardware trigger
 FLAGS=-Wall -g -MMD
-
-# Using software trigger
-#FLAGS=-Wall -g -MMD -DTRIG_SYSFS
-
 INCLUDE=-I. -I../include
 LIBDIR=-L../lib
 LIBS=-lgalileo2

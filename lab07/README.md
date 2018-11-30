@@ -23,7 +23,7 @@ O acesso aos canais do conversor A/D através do espaço do usuário é feito at
 
 No modo contínuo são feitas conversões contínuas em sequência em todos os canais habilitados
 
-Os dados são lidos do arquivo /dev/iio:device0 em binário. 
+Os dados são lidos do arquivo /dev/iio:device0 em binário.
 
 A configuração do buffer para receber os dados e dos canais que serão amostrados também é feita através de arquivos no diretório /sys/bus/iio/devices/iio: device0:
 
@@ -87,13 +87,13 @@ groupmems -g adc -a <LOGIN>
 
 ```
 
-* Verifique no mapa de configuração dos pinos da Galileo Gen2 como configurá-la para usar o ADC_A0. 
-  
+* Verifique no mapa de configuração dos pinos da Galileo Gen2 como configurá-la para usar o ADC_A0.
+
 Note que, para não alterar o valor medido pelo conversor A/D, não deve haver resistor de pull-up nem de pull-down no pino.
 
 * Faça um script de inicialização para configurar o uso do ADC_A0 em modo one shot. Configure permissões de leitura para o grupo adc nos arquivos in_voltage0_raw e in_voltage0_scale.
 
-* O script de inicialização esta na pasta rotary e deve ser configurado 
+* O script de inicialização esta na pasta rotary e deve ser configurado
 
 No host:
 `scp rotary_init root@<galileoXX>:/etc/init.d`
@@ -122,7 +122,7 @@ ssh <LOGIN>@<galileoXX>
 
 ## Experimento 2
 
-* O script de inicialização esta na pasta continuo e deve ser configurado 
+* O script de inicialização esta na pasta continuo e deve ser configurado
 
 No host:
 `scp continuo_init root@<galileoXX>:/etc/init.d`
@@ -149,9 +149,9 @@ ssh <LOGIN>@<galileoXX>
 ./continuo medidas.csv
 ```
 
-* Copiar para o Host o arquivo gerado 
+* Copiar para o Host o arquivo gerado
   ```
-scp -r <LOGIN>@<galileoXX>:/home/<LOGIN>/<FILE> <PATH_HOST>
+  scp -r <LOGIN>@<galileoXX>:/home/<LOGIN>/<FILE> <PATH_HOST>
   ```
 
 * Instalar o GNU Plot
@@ -159,7 +159,3 @@ scp -r <LOGIN>@<galileoXX>:/home/<LOGIN>/<FILE> <PATH_HOST>
 
 * Plotar o gráfico
 `sh plot.sh medidas.csv`
-
-
-
-
