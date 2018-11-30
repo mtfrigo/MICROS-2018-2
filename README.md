@@ -136,7 +136,7 @@ ln -s devkit-x86 1.7.2
 
 * Execute a relocação das ferramentas de desenvolvimento:
 ```
-INSTALL_DIR='pwd' sdk-relocator/relocate_sdk.sh
+INSTALL_DIR=`pwd` sdk-relocator/relocate_sdk.sh
 ```
 
 * !!os nomes dos links tem que ser exatamente estes!!

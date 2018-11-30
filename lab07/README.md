@@ -77,7 +77,7 @@ Quando é usado um trigger do tipo iio_sysfs_trigger, depois de habilitado o buf
 
 As conversões são paradas desabilitando-se o buffer e removendo-se o trigger.
 
-## Experimento
+## Experimento 1
 
 * Logar como root na galileo, criar o grupo 'adc' e incluir o seu usuário nesse grupo.
 ```
@@ -96,12 +96,70 @@ Note que, para não alterar o valor medido pelo conversor A/D, não deve haver r
 * O script de inicialização esta na pasta rotary e deve ser configurado 
 
 No host:
-`scp rotary root@<galileoXX>:/etc/init.d`
+`scp rotary_init root@<galileoXX>:/etc/init.d`
 
 Na galileo(como root)
 ```
 cd /etc/init.d
-chmod +x rotary
-update-rc.d rotary defaults
+chmod +x rotary_init
+update-rc.d rotary_init defaults
 reboot
 ```
+
+* Rodar o Makefile da pasta lib
+
+* Rodar o Makefile da pasta rotary
+
+* Copiar o arquivo rotary para a galileo
+
+`scp rotary <LOGiN>@<galileoXX>:`
+
+* Logar na galileo e rodar o código!
+```
+ssh <LOGIN>@<galileoXX>
+./rotary
+```
+
+## Experimento 2
+
+* O script de inicialização esta na pasta continuo e deve ser configurado 
+
+No host:
+`scp continuo_init root@<galileoXX>:/etc/init.d`
+
+Na galileo(como root)
+```
+cd /etc/init.d
+chmod +x continuo_init
+update-rc.d continuo_init defaults
+reboot
+```
+
+* Rodar o Makefile da pasta lib
+
+* Rodar o Makefile da pasta continuo
+
+* Copiar o arquivo continuo para a galileo
+
+`scp continuo <LOGiN>@<galileoXX>:`
+
+* Logar na galileo e rodar o código!
+```
+ssh <LOGIN>@<galileoXX>
+./continuo medidas.csv
+```
+
+* Copiar para o Host o arquivo gerado 
+  ```
+scp -r <LOGIN>@<galileoXX>:/home/<LOGIN>/<FILE> <PATH_HOST>
+  ```
+
+* Instalar o GNU Plot
+`sudo apt-get install gnuplot`
+
+* Plotar o gráfico
+`sh plot.sh medidas.csv`
+
+
+
+
