@@ -1,15 +1,10 @@
-TARGET=continuo
+TARGET=spistat
 SRCS=$(TARGET).c
 
-# Using hardware trigger
-FLAGS=-Wall -g -MMD
-
-# Using software trigger
-#FLAGS=-Wall -g -MMD -DTRIG_SYSFS
-
-INCLUDE=-I. -I../include
-LIBDIR=-L../lib
-LIBS=-lgalileo2
+FLAGS=-O2 -Wall -g -MMD
+INCLUDE=-I.
+LIBDIR=
+LIBS=
 
 CC=$(CROSS_COMPILE)gcc
 CFLAGS=$(FLAGS) $(INCLUDE)
@@ -17,7 +12,7 @@ LDFLAGS=$(LIBDIR) $(LIBS)
 
 all: $(TARGET)
 
-$(TARGET): $(SRCS:.c=.o) ../lib/libgalileo2.a
+$(TARGET): $(SRCS:.c=.o)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 %.o: %.c
