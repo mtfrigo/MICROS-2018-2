@@ -1,6 +1,6 @@
 /*
   servo.c: Commands a radio-control servo on Galileo Gen2 IO3 using PWM.
-  
+
   Copyright (c) 2016 Walter Fetter Lages <w.fetter@ieee.org>
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ int main(int argc,char * argv[])
         int duty_cycle;
         double angle;
         char str[100];
-        
+
         if(argc != 2)
         {
                 puts("Usage: servo <angle in degrees>");
@@ -45,15 +45,45 @@ int main(int argc,char * argv[])
         }
         //850.000 = usado para converter em frequência
         //1.500.000ns = 1.500 us = frequência do sentido anti-horário
-        duty_cycle=angle/M_PI_2*850000+1500000;
+
+        duty_cycle=angle/M_PI_2*925000+1500000;
+        // duty_cycle=angle/M_PI_2*850000+1500000;
+
+        // printf("DT %d %d\n", duty_cycle, i);
+
+        printf("DT %d\n", duty_cycle);
         //Período de 20.000.000ns == 20ms
         pputs("/sys/class/pwm/pwmchip0/device/pwm_period","20000000");
         //Formata o duty cylce
         snprintf(str,sizeof str,"%d\n",duty_cycle);
         pputs("/sys/class/pwm/pwmchip0/pwm1/duty_cycle",str);
         pputs("/sys/class/pwm/pwmchip0/pwm1/enable","1");
-        
-        sleep(1);
+
+
+         // int i;
+        //  for(i = 0; i < 15; i+=1)
+        //  {
+        //
+        //      if(i%2 == 0)
+        //      {
+        //          duty_cycle=-1*925000+1500000;
+        //
+        //      }
+        //      else
+        //      {
+        //          duty_cycle=925000+1500000;
+        //      }
+        //
+        //     printf("DT %d %d\n", duty_cycle, i);
+        //     //Período de 20.000.000ns == 20ms
+        //     pputs("/sys/class/pwm/pwmchip0/device/pwm_period","20000000");
+        //     //Formata o duty cylce
+        //     snprintf(str,sizeof str,"%d\n",duty_cycle);
+        //     pputs("/sys/class/pwm/pwmchip0/pwm1/duty_cycle",str);
+        //     pputs("/sys/class/pwm/pwmchip0/pwm1/enable","1");
+        //
+        //     sleep(1);
+        // }
 
         return 0;
 }
