@@ -86,14 +86,18 @@ scp <LOGIN>@<galileoXX>:<FILE> <path_host>
 ## Depuração Remota
 
 Executando na Galileo
+
 HOST = nome do host
+
 PORT = porta TCP usada para comunicação (escolher porta acima de 1024)
 ```
 gdbserver <HOST>:<PORT> <PROGRAMA>
 ```
 
 Executando no Host
+
 TARGET = nome da galileo
+
 PORT = porta TCP usada para comunicação (escolher porta acima de 1024)
 ```
 kdgb -r <TAGET>:<PORT> <PROGRAMA>
