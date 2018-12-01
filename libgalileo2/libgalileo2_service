@@ -1,0 +1,70 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          libgalileo2_init
+# Required-Start:
+# Should-Start:
+# Required-Stop:
+# Default-Start:     S
+# Default-Stop:
+# Short-Description: Configures the libgalileo2 functionalities
+# Description:       Configures the libgalileo2 functionalities
+### END INIT INFO
+
+case "$1" in
+    start|restart|force-reload)
+		## Begin of EEPROM ##
+			chgrp eeprom /sys/bus/i2c/devices/0-0054/eeprom
+			chmod g+rw /sys/bus/i2c/devices/0-0054/eeprom
+		## End of EEPROM ##
+
+		## Begin of LCD ##
+			# Pull-up on IO18
+			if [ ! -d /sys/class/gpio/gpio57 ] ; then
+					echo -n "57" > /sys/class/gpio/export
+			fi
+			echo "out" > /sys/class/gpio/gpio57/direction
+			echo "1" > /sys/class/gpio/gpio57/value
+
+			# Select I2C on IO18 and IO19
+			if [ ! -d /sys/class/gpio/gpio60 ] ; then
+					echo -n "60" > /sys/class/gpio/export
+			fi
+			echo "out" > /sys/class/gpio/gpio60/direction
+			echo "0" > /sys/class/gpio/gpio60/value
+
+			# Pull-up on IO19
+			if [ ! -d /sys/class/gpio/gpio59 ] ; then
+					echo -n "59" > /sys/class/gpio/export
+			fi
+			echo "out" > /sys/class/gpio/gpio59/direction
+			echo "1" > /sys/class/gpio/gpio59/value
+
+			chgrp i2c /dev/i2c-0
+			chmod g+rw /dev/i2c-0
+		## End of LCD ##
+	;;
+    stop)
+		## Begin of LCD ##
+			# No pull-up on IO18
+			echo "in" > /sys/class/gpio/gpio57/direction
+			ecbo "57" > /sys/class/gpio/unexport
+
+			# GPIO on IO18 and IO19
+			echo "1" > /sys/class/gpio/gpio60/value
+			echo "60" > /sys/class/gpio/unexport
+
+			# No pull-up on  IO19
+			echo "in" > /sys/class/gpio/gpio59/direction
+			echo "59" > /sys/class/gpio/unexport
+		## End of LCD ##
+	;;
+    status)
+	;;
+    *)
+	echo -n "Usage: $0 "
+	echo "{start|stop|restart|force-reload|status}"
+	exit 1
+	;;
+esac
+
+exit 0
