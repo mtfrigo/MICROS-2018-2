@@ -26,17 +26,20 @@
 int main(int argc,char *argv[])
 {
 	char s[1024];
+
 	//Vê se tem algo na eeprom
-        if(pgets(s,sizeof s,"/sys/bus/i2c/devices/0-0054/eeprom") < 0)
-        {
+    if(pgets(s,sizeof s,"/sys/bus/i2c/devices/0-0054/eeprom") < 0)
+    {
+        perror(argv[0]);
+        return errno;
+	}
+
+	// Escreve a mesma coisa na tela
+    if(write(STDOUT_FILENO,s,sizeof s) < 0)
+    {
 		perror(argv[0]);
 		return errno;
 	}
-	//Escreve a mesma coisa na tela
-        if(write(STDOUT_FILENO,s,sizeof s) < 0)
-        {
-		perror(argv[0]);
-		return errno;
-	}
+    
 	return 0;
 }

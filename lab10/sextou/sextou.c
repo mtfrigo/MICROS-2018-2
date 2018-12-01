@@ -27,7 +27,7 @@
 
 #include <linux/i2c-dev.h>
 
-#include <i2cutil.h>
+#include <i2c.h>
 #include <jhdlcd.h>
 #include <string.h>
 
@@ -62,7 +62,7 @@ int main(int argc,char *argv[])
 
         fd_lcd = lcd_init();
 
-        backlight_init(fd_lcd);
+        lcd_backlight_init(fd_lcd);
         
 
         act.sa_handler=quit;
@@ -72,18 +72,11 @@ int main(int argc,char *argv[])
         strcpy(palavra1, argv[1]);
         strcpy(palavra2, argv[2]);
 
+        lcd_write_words(fd_lcd, palavra1, palavra2);
+
         while(run)
         {
-
-                write_words_lcd(fd_lcd, palavra1, palavra2);
-
-        	//ioctl serve para executar comandos diferentes de read/write no barramento
-		//Neste caso, define o endereço do escravo (BL_ADDR)
-                if(ioctl(fd_lcd,I2C_SLAVE,BL_ADDR) < 0) i2c_error("ioctl on /dev/i2c-0");
-                i2c_write_reg(fd_lcd,BL_RED,rand());
-                i2c_write_reg(fd_lcd,BL_GREEN,rand());
-                i2c_write_reg(fd_lcd,BL_BLUE,rand());
-
+                lcd_backlight_set(fd_lcd, rand(), rand(), rand());
                 usleep(990000);
         }
 
