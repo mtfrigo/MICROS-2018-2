@@ -11,178 +11,98 @@ http://www.ece.ufrgs.br/~fetter/eng10032/
 
 https://moodle.ece.ufrgs.br/course/view.php?id=10
 
-# Utilidades
+# Tabela com os MACs
 
-## Conectar na galileo como root
+98:4F:EE:01:D6:7D	galileo1
 
-```
-ssh root@<galileoXX>
-passwd
-useradd -c <LOGIN> -s /bin/bash -m <LOGIN>
-passwd <LOGIN>
-exit
-```
+98:4F:EE:01:EA:F4	galileo2
 
-## Adicionar usuário
+98:4F:EE:01:EB:58	galileo3
 
-```
-useradd -c "Nome" -s /bin/bash -m <LOGIN>
-userdel -r <LOGIN> (caso criado errado)
-passwd <LOGIN>
-exit
-ssh <LOGIN>@<galileoXX>
-echo "export PATH=.:$PATH" >> .profile
-exit
-```
+98:4F:EE:01:EB:61	galileo4
 
-## Adicionar grupo
+98:4F:EE:01:EB:62	galileo5
 
-```
-groupadd -r <NOME_DO_GRUPO>
-```
+98:4F:EE:01:EB:68	galileo6
 
-## Adicionar membro ao grupo
+98:4F:EE:01:EB:ED	galileo7
 
-```
-groupmems -g <NOME_DO_GRUPO> -a <LOGIN>
-```
+98:4F:EE:01:EC:2C	galileo8
 
-## Adicionar scripts de inicialização (script na galileo)
-```
-cp ~/<NOME_SCRIPT> /etc/init.d
-chmod +x /etc/init.d/<NOME_SCRIPT>
-update-rc.d <NOME_SCRIPT> defaults
-reboot
-update-rc.d <NOME_SCRIPT> remove -> feito no fim do lab
-```
+98:4F:EE:01:EC:30	galileo9
 
-## Configurar o host para o uso da Galileo
+98:4F:EE:01:EC:8A	galileo10
 
-Levando em consideração o uso do script *iss_setup.sh*, faça o seguinte comando:
-```
-source iss_setup.sh
-```
+98:4F:EE:01:EC:FC	galileo11
 
-## Configurar o compilador para o compilador nativo
+98:4F:EE:01:ED:4B	galileo12
 
-```
-export CROSS_COMPILE=
-```
+98:4F:EE:01:EE:28	galileo13
 
-## Copiar arquivo do host para a Galileo
+98:4F:EE:01:EE:2A	galileo14
 
-Levando em consideração que o arquivo está no HOST!
-```
-scp <FILE> <LOGIN>@<galileoXX>:
-```
+98:4F:EE:01:EE:31	galileo15
 
-## Copiar arquivo da Galileo para o Host
+98:4F:EE:01:EE:56	galileo16
 
-Levando em consideração que o arquivo está na Galileo!
-```
-scp <LOGIN>@<galileoXX>:<FILE> <path_host>
-```
+98:4F:EE:01:EE:7A	galileo17
 
-## Depuração Remota
+98:4F:EE:01:EE:8D	galileo18
 
-Executando na Galileo
+98:4F:EE:01:EE:90	galileo19
 
-HOST = nome do host
+98:4F:EE:01:EF:02	galileo20
 
-PORT = porta TCP usada para comunicação (escolher porta acima de 1024)
-```
-gdbserver <HOST>:<PORT> <PROGRAMA>
-```
+98:4F:EE:01:EF:2A	galileo21
 
-Executando no Host
+98:4F:EE:01:EF:2F	galileo22
 
-TARGET = nome da galileo
+98:4F:EE:01:EF:30	galileo23
 
-PORT = porta TCP usada para comunicação (escolher porta acima de 1024)
-```
-kdgb -r <TAGET>:<PORT> <PROGRAMA>
-```
+98:4F:EE:01:EF:34	galileo24
 
-## Instalação do ambiente em máquinas fora do Lab
+# Linux for Dummies                                                                                                                                                                                                                                                                                                                                                         
+
+# Setup
+
+## Conectar na Galielo como root
+
+`ssh root@galileoXX` 
+`passwd`
 
 
-* Baixe e descompacte o arquivo como o Intel System Studio IoT Edition no
-diretório /opt:
+## Adicionar novo usuario
 
-```
-cd /opt
-tar -xjf iss-iot-linux_03-24-16.tar.bz2
-rm iss-iot-linux_03-24-16.tar.bz2
-```
+`useradd -c <LOGIN> -s /bin/base -m <LOGIN>`
+`passwd <LOGIN>` 
 
-* Ajuste as permissões dos arquivos descompactados:
-```
-chown -R root.root iss-iot-linux
-chmod -R go-w iss-iot-linux
-chmod -R -s iss-iot-linux
-```
+## Conectar com usuario
 
-* Ainda no diretório /opt, crie um link para a versão atual do Intel System
-Studio Iot Edition:
-```
-ln -s iss-iot-linux iot-devkit
-```
+`ssh <LOGIN>@galileoXX`
+`passwd <LOGIN>`
 
-* Crie um link para o diretório das ferramentas de desenvolvimento:
-```
-cd iot-devkit
-ln -s devkit-x86 1.7.2
-```
+## Copiar FILE para a Galileo
 
-* Execute a relocação das ferramentas de desenvolvimento:
-```
-INSTALL_DIR=`pwd` sdk-relocator/relocate_sdk.sh
-```
+`scp <FILE> <LOGIN>@galileoXX :`
 
-* !!os nomes dos links tem que ser exatamente estes!!
+# Lab 01
+
+Passo a passo lab 01:
+* Inserir cartao microSD na Galileo
+* Verificar na etiqueta da Galileo o MAC, e descobrir o seu nome pela tabela
+* abrir terminal no HOST e usar o comando `ssh root@<galileoname>`
+* configurar senha para o super usuario atraves do comando `passwd`
+* criar um usuario comum `useradd -c "Nome por Extenso" -s /bin/bash -m <login>`
+* pode-se excluir o usuario com `userdel -r <login>`
+* configurar senha para tal usuario com `passwd <login>`
+* sair do galileo `exit`
+* fazer login na galileo com o login criado `ssh <login>@<galileoname>`
+* incluir diretorio no PATH `echo "export PATH=.:$PATH" >> .profile`
+* sair da galileo `exit`
+
+# Lab 06
 
 
 
-# Configurando porta gpio
 
-## Exportar porta
 
-Escreve-se o número da porta GPIO em m /sys/class/gpio/export
-```
-echo -n "XX" > /sys/class/gpio/export
-```
-Com isso surgirá um diretório correspondente à porta. Por exemplo: /sys/class/gpio/gpioXX
-
-## Desexportar a porta
-
-Escreve-se o número da porta no arquivo o /sys/class/gpio/unexport.
-```
-echo -n "XX" > /sys/class/gpio/unexport
-```
-
-## Direção da porta
-
-Escrevendo-se "in" ou "out" em /sys/class/gpio/gpioXX/direction.
-```
-echo -n "out" > /sys/class/gpio/gpioXX/direction
-ou
-echo -n "in" > /sys/class/gpio/gpioXX/direction
-```
-
-As portas de número igual ou maior do que 64 não possuem o pseudo-arquivo direction, pois são sempre saída já que são usadas apenas para controlar multiplexadores e buffers.
-
-## Ler ou escrever
-
-Escrevendo-se ou lendo-se em /sys/class/gpio/gpioXX/value.
-```
-echo -n "0" > /sys/class/gpio/gpio46/value
-ou
-cat /sys/class/gpio/gpio46/value
-```
-Para as portas que controlam multiplexadores ou direção dos buffers também é possível escrever "low" ou "high" no pseudo-arquivo direction. Isso é equivalente a configurar simultaneamente direction para "out" e value para "0" ou "1",  respectivamente.
-
-# Ajuste de permissões
-
-Por default, os arquivos em /sys/class/gpio só podem ser escritos pelo superusuário.
-A configuração destas e o ajuste das permissões será feito através dos scripts de inicialização
-Será criado o grupo gpio e as permissões serão ajustadas para que os usuários membros deste grupo possam acessar os arquivos adequados em /sys/class/gpio.

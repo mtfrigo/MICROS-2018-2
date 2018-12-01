@@ -1,5 +1,5 @@
 TARGET=libgalileo2.a
-SRCS=pputs.c pgets.c i2c_write_reg.c
+SRCS=pputs.c pgets.c i2c_write_reg.c lcd.c
 
 FLAGS=-O2 -Wall -MMD
 INCLUDE=-I. -I../include

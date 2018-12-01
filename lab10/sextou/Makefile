@@ -1,4 +1,4 @@
-TARGET=clocklcd
+TARGET=sextou
 SRCS=$(TARGET).c
 
 FLAGS=-O2 -Wall -g -MMD
