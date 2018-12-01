@@ -1,14 +1,7 @@
-TARGET1=eepromwrite
-SRCS1=$(TARGET1).c
-
-TARGET2=eepromread
-SRCS2=$(TARGET2).c
-
-TARGETS=$(TARGET1) $(TARGET2)
-
+TARGETS=eeprom
 FLAGS=-Wall -MMD -g
-INCLUDE=-I. -I../include
-LIBDIR=-L../lib
+INCLUDE=-I. -I../include -I ../../lib/include
+LIBDIR=-L../../lib
 LIBS=-lgalileo2
 
 CC=$(CROSS_COMPILE)gcc

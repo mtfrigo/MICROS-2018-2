@@ -1,8 +1,9 @@
 TARGET=libgalileo2.a
-SRCS=galileo2io.c i2c.c lcd.c
+SRC=src
+SRCS=$(SRC)/galileo2io.c $(SRC)/i2c.c $(SRC)/eeprom.c $(SRC)/lcd.c
 
 FLAGS=-O2 -Wall -MMD
-INCLUDE=-I. -I../include
+INCLUDE=-I. -I./include
 LIBDIR=
 LIBS=
 
@@ -23,7 +24,7 @@ $(TARGET): $(SRCS:.c=.o)
 -include $(SRCS:.c=.d)
 
 clean:
-	rm -f *~ *.bak *.o *.d
+	rm -f $(SRC)/*~ $(SRC)/*.bak $(SRC)/*.o $(SRC)/*.d
 
 distclean: clean
 	rm -f $(TARGET)
