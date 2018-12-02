@@ -2,6 +2,7 @@
     "files.associations": {
         "i2cutil.h": "c",
         "string.h": "c",
-        "jhdlcd.h": "c"
+        "jhdlcd.h": "c",
+        "time.h": "c"
     }
 }

@@ -1,13 +1,13 @@
 #! /bin/sh
 ### BEGIN INIT INFO
-# Provides:          libgalileo2_service
+# Provides:          teste_service
 # Required-Start:
 # Should-Start:
 # Required-Stop:
 # Default-Start:     S
 # Default-Stop:
-# Short-Description: Configures the libgalileo2_service functionalities
-# Description:       Configures the libgalileo2_service functionalities
+# Short-Description: Configures the teste_service functionalities
+# Description:       Configures the teste_service functionalities
 ### END INIT INFO
 
 case "$1" in
