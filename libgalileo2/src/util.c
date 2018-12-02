@@ -7,5 +7,5 @@ float util_map(int value, int from_min, int from_max, int to_min, int to_max)
 
     float proportion = ((float)from_range)/to_range;
 
-    return value / proportion;
+    return (value / proportion) + to_min;
 }
