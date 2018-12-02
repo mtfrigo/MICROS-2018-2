@@ -14,33 +14,74 @@ case "$1" in
     start|restart|force-reload)
 
 
-		## Begin of IO3 ##
-		# As a output LED
+		## Begin of IO3 (PWM1) ##
+		# As a output SERVO
 
-			if [ ! -d /sys/class/gpio/gpio62 ] ; then
-				echo -n "62" > /sys/class/gpio/export
+			if [ ! -d /sys/class/pwm/pwmchip0/pwm1 ] ; then
+	   			echo -n "1" > /sys/class/pwm/pwmchip0/export
 			fi
-			echo -n "out" > /sys/class/gpio/gpio62/direction
+			chgrp pwm /sys/class/pwm/pwmchip0/device/pwm_period
+			chmod g+w /sys/class/pwm/pwmchip0/device/pwm_period
+			chgrp pwm /sys/class/pwm/pwmchip0/pwm1/duty_cycle
+			chmod g+w /sys/class/pwm/pwmchip0/pwm1/duty_cycle
+			chgrp pwm /sys/class/pwm/pwmchip0/pwm1/enable
+			chmod g+w /sys/class/pwm/pwmchip0/pwm1/enable
 
+			# gpio16 = 0 = out
+			if [ ! -d /sys/class/gpio/gpio16 ] ; then
+				echo -n "16" > /sys/class/gpio/export
+			fi
+			echo -n "out" > /sys/class/gpio/gpio16/direction
+			echo -n "0" > /sys/class/gpio/gpio16/value
+
+			# gpio17 = in = no pull-up nor pull-down
+			if [ ! -d /sys/class/gpio/gpio17 ] ; then
+				echo -n "17" > /sys/class/gpio/export
+			fi
+			echo -n "in" > /sys/class/gpio/gpio17/direction
 
 			if [ ! -d /sys/class/gpio/gpio76 ] ; then
 				echo -n "76" > /sys/class/gpio/export
 			fi
 			echo -n "0" > /sys/class/gpio/gpio76/value
 
+
+			# gpio64 = 1 */
 			if [ ! -d /sys/class/gpio/gpio64 ] ; then
 				echo -n "64" > /sys/class/gpio/export
 			fi
-			echo -n "out" > /sys/class/gpio/gpio64/direction
-			echo -n "0" > /sys/class/gpio/gpio64/value
+			echo -n "1" > /sys/class/gpio/gpio64/value
 
-			chgrp gpio /sys/class/gpio/gpio62/value
-			chmod g+rw /sys/class/gpio/gpio62/value
+
+		## End of IO3 (PWM1) ##
+
+		## Begin of IO3 ##
+		# As a output LED
+
+				#if [ ! -d /sys/class/gpio/gpio62 ] ; then
+				#	echo -n "62" > /sys/class/gpio/export
+				#fi
+				#echo -n "out" > /sys/class/gpio/gpio62/direction
+
+
+				#if [ ! -d /sys/class/gpio/gpio76 ] ; then
+				#	echo -n "76" > /sys/class/gpio/export
+				#fi
+				#echo -n "0" > /sys/class/gpio/gpio76/value
+
+				#if [ ! -d /sys/class/gpio/gpio64 ] ; then
+				#	echo -n "64" > /sys/class/gpio/export
+				#fi
+				#echo -n "out" > /sys/class/gpio/gpio64/direction
+				#echo -n "0" > /sys/class/gpio/gpio64/value
+
+				#chgrp gpio /sys/class/gpio/gpio62/value
+				#chmod g+rw /sys/class/gpio/gpio62/value
 
 
 		## End of IO3 ##
 
-		## Begin of IO3 ##
+		## Begin of IO6 ##
 		# As a output LED
 
 			if [ ! -d /sys/class/gpio/gpio1 ] ; then
@@ -64,7 +105,7 @@ case "$1" in
 			chmod g+rw /sys/class/gpio/gpio1/value
 
 
-		## End of IO3 ##
+		## End of IO6 ##
 
 		## Begin of AD 0 ## 
 
@@ -159,12 +200,29 @@ case "$1" in
 	;;
     stop)
 
-		## Begin of IO3 ## 
-			echo -n "in" > /sys/class/gpio/gpio62/direction
-			echo -n "62" > /sys/class/gpio/unexport
+		## Begin of IO3 (PWM1) ## 
+			echo -n "0" > /sys/class/pwm/pwmchip0/pwm1/enable
 			echo -n "76" > /sys/class/gpio/unexport
 			echo -n "64" > /sys/class/gpio/unexport
+			echo -n "17" > /sys/class/gpio/unexport
+			echo -n "1" > /sys/class/gpio/gpio16/value
+			echo -n "16" > /sys/class/gpio/unexport
+			echo -n "1" > /sys/class/pwm/pwmchip0/unexport
 		## End of IO3 ## 
+
+		## Begin of IO3 (LED) ## 
+			#echo -n "in" > /sys/class/gpio/gpio62/direction
+			#echo -n "62" > /sys/class/gpio/unexport
+			#echo -n "76" > /sys/class/gpio/unexport
+			#echo -n "64" > /sys/class/gpio/unexport
+		## End of IO3 ## 
+
+		## Begin of IO6 (LED) ## 
+			echo -n "in" > /sys/class/gpio/gpio1/direction
+			echo -n "1" > /sys/class/gpio/unexport
+			echo -n "20" > /sys/class/gpio/unexport
+			echo -n "68" > /sys/class/gpio/unexport
+		## End of IO6 ## 
 
 
 		## Begin of AD 0 ## 
@@ -186,7 +244,7 @@ case "$1" in
 		## Begin of LCD ##
 			# No pull-up on IO18
 			echo "in" > /sys/class/gpio/gpio57/direction
-			ecbo "57" > /sys/class/gpio/unexport
+			echo "57" > /sys/class/gpio/unexport
 
 			# GPIO on IO18 and IO19
 			echo "1" > /sys/class/gpio/gpio60/value

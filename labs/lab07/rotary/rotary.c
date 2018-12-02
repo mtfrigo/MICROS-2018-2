@@ -43,12 +43,13 @@ int main(int argc,char * argv[])
 
     for(;;)
     {
-            lseek(fd,0,SEEK_SET);
-            read(fd,data_str,sizeof data_str);
-            raw=atoi(data_str);
+        lseek(fd,0,SEEK_SET);
+        read(fd,data_str,sizeof data_str);
+        raw=atoi(data_str);
             
-            printf("Raw=%d\tScale=%f\tVoltage=%fV\n",raw,scale,raw*scale);
-    sleep(1);
+        printf("Raw=%d\tScale=%f\tVoltage=%fV\n",raw,scale,raw*scale);
+        
+        sleep(1);
     }
 
     close(fd);
