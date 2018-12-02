@@ -3,6 +3,10 @@
         "i2cutil.h": "c",
         "string.h": "c",
         "jhdlcd.h": "c",
-        "time.h": "c"
+        "time.h": "c",
+        "galileo2io.h": "c",
+        "unistd.h": "c",
+        "math.h": "c",
+        "fcntl.h": "c"
     }
 }

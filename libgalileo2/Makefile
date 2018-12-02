@@ -1,7 +1,7 @@
 TARGET=libgalileo2.a
 
 SRCDIR=src
-SRCS=$(SRCDIR)/galileo2io.c $(SRCDIR)/i2c.c $(SRCDIR)/eeprom.c $(SRCDIR)/lcd.c $(SRCDIR)/util.c
+SRCS=$(SRCDIR)/galileo2io.c $(SRCDIR)/i2c.c $(SRCDIR)/eeprom.c $(SRCDIR)/lcd.c $(SRCDIR)/util.c $(SRCDIR)/adc.c $(SRCDIR)/pwm.c
 
 FLAGS=-O2 -Wall -MMD
 INCLUDE=-I. -I./include

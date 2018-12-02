@@ -9,6 +9,8 @@
 #include <time.h>
 #include <math.h>
 #include <util.h>
+#include <pwm.h>
+#include <adc.h>
 #include <galileo2io.h>
 
 static volatile int run = 1;
@@ -34,6 +36,9 @@ int main(int argc,char *argv[])
         double angle;
         char str[100];
 
+        char pwmId = '1';
+        char adcId = '1';
+
         act.sa_handler = quit;
         sigaction(SIGINT, &act, NULL);
         sigaction(SIGTERM, &act, NULL);
@@ -41,48 +46,43 @@ int main(int argc,char *argv[])
         int fd_lcd = lcd_init();
         lcd_backlight_init(fd_lcd);
 
-        if((fd=open("/sys/bus/iio/devices/iio:device0/in_voltage0_raw",O_RDONLY)) < 0)
-        {
-                perror("Opening in_voltage0raw:");
-                return -1;
-        }
+        fd = openADC(adcId);
 
-        pgets(data_str,sizeof data_str,"/sys/bus/iio/devices/iio:device0/in_voltage0_scale");
-        scale=atof(data_str)/1000.0;
+        getRawScale(data_str, adcId);
+        scale = getScale(data_str);
 
-        pgets(data_str,sizeof data_str,"/sys/bus/iio/devices/iio:device0/in_voltage0_scale");
-        //scale=atof(data_str)/1000.0;
+        // Period for all pwm
+        setPeriod("20000000");
 
-        
-        pputs("/sys/class/pwm/pwmchip0/device/pwm_period","20000000");
-        pputs("/sys/class/pwm/pwmchip0/pwm1/enable","1");
+        enablePWM(pwmId);
 
         while(run)
         {
                 lseek(fd,0,SEEK_SET);
                 read(fd,data_str,sizeof data_str);
+
                 raw=atoi(data_str);
 
                 sprintf(voltageStr, "Voltage = %f V", raw*scale);
-                sprintf(rawStr, "Raw = %d; 4000", raw);
 
                 printf("Raw=%d\tScale=%f\tVoltage=%fV\n",raw,scale,raw*scale);
 
-
                 lcd_backlight_set(fd_lcd, rand(), rand(), rand());
 
-                angle=util_map(raw, 0, 4000, 0, 180) - 90  ;
+                angle = util_map(raw, 0, 4000, 0, 180) - 90  ;
+
                 if(angle > 90) angle = 90 *  M_PI/180.0;
                 else angle = angle *  M_PI/180.0;
-                duty_cycle=angle/M_PI_2*925000+1500000;
+
+                duty_cycle = angle/M_PI_2*925000+1500000;
                 snprintf(str,sizeof str,"%d\n",duty_cycle);
 
-                sprintf(angleStr, "Raw = %d; Max = 4000", raw);
-                snprintf(angleStr,sizeof angleStr,"%f; %f", util_map(raw, 0, 4000, 0, 180) - 90 , util_map(4000, 0, 4000, 0, 180));
-                pputs("/sys/class/pwm/pwmchip0/pwm1/duty_cycle",str);
+                sprintf(rawStr, "Dc = %d; Max = 4096Z", duty_cycle);
+                snprintf(angleStr,sizeof angleStr,"%f; %f", util_map(raw, 0, 4096, 0, 180) - 90 , util_map(4096, 0, 4096, 0, 180));
+
+                setDutycycle(str, pwmId);
 
                 lcd_write_words(fd_lcd, rawStr, angleStr);
-
 
                 sleep(1);
         }
