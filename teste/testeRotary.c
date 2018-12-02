@@ -20,9 +20,6 @@ int main(int argc,char *argv[])
 {
         struct sigaction act;
         int fd;
-        int fd_led;
-
-        char state='0';
         
         char data_str[80];
         double scale;
@@ -43,12 +40,6 @@ int main(int argc,char *argv[])
                 return -1;
         }
 
-        if((fd_led=open("/sys/class/gpio/gpio1/value",O_WRONLY)) < 0)
-        {
-                perror("Opening gpio1 value:");
-                return -1;
-        }
-
         pgets(data_str,sizeof data_str,"/sys/bus/iio/devices/iio:device0/in_voltage0_scale");
         scale=atof(data_str)/1000.0;
 
@@ -57,10 +48,6 @@ int main(int argc,char *argv[])
                 lseek(fd,0,SEEK_SET);
                 read(fd,data_str,sizeof data_str);
                 raw=atoi(data_str);
-
-                lseek(fd_led,0,SEEK_SET);
-		write(fd_led,&state,sizeof state);
-
 
                 sprintf(voltageStr, "Voltage = %f V", raw*scale);
                 sprintf(rawStr, "Raw = %d", raw);
@@ -72,11 +59,9 @@ int main(int argc,char *argv[])
                 lcd_backlight_set(fd_lcd, rand(), rand(), rand());
 
                 sleep(1);
-                state^='0'^'1';
         }
 
         close(fd);
-        close(fd_led);
 
 	return 0;
 }

@@ -35,3 +35,24 @@ int eeprom_read(char data[EEPROM_LENGTH], int length)
 
     return 0;
 }
+
+int eeprom_clear()
+{
+    char data[EEPROM_LENGTH];
+    bzero(data, EEPROM_LENGTH);
+
+    int i;
+
+    for(i = 0; i < EEPROM_LENGTH; i++) data[i] = '\0';
+    data[EEPROM_LENGTH-1] = '\0';
+
+
+    if(pputs("/sys/bus/i2c/devices/0-0054/eeprom", data) < 0)
+	{
+		perror("EEPROM clear error");
+
+		return errno;
+	}
+
+    return 0;
+}
