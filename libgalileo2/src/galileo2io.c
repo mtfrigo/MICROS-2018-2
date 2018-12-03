@@ -46,7 +46,7 @@ int *getDate(char str[16])
 	return 0;
 }
 
-int *getTime(char str[16])
+int *getTime(char str[16], int fix)
 {
 
 	char buffer[16];
@@ -58,7 +58,9 @@ int *getTime(char str[16])
 	t0=t;
 	localtime_r(&t,&lt);
 
-	strftime(buffer,sizeof buffer,"%T %Z", &lt);
+	lt.tm_hour = lt.tm_hour - fix;
+
+	strftime(buffer,sizeof buffer,"%H:%M:%S", &lt);
 
 	strncpy(str, buffer, 16);
 	

@@ -1,9 +1,9 @@
-TARGET=first
+TARGET=despertador
 SRCS=$(TARGET).c
 
-FLAGS=-Wall -g -MMD
-INCLUDE=-I. -I../include
-LIBDIR=-L../lib
+FLAGS=-O2 -Wall -g -MMD
+INCLUDE=-I. -I../../libgalileo2/include
+LIBDIR=-L../../libgalileo2
 LIBS=-lgalileo2
 
 CC=$(CROSS_COMPILE)gcc
