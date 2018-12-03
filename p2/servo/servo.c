@@ -60,7 +60,7 @@ int main(int argc,char *argv[])
         lcd_backlight_init(lcd_fd);
         lcd_backlight_set(lcd_fd, 255, 255, 255);
 
-        p_fd = openADC('1');
+        p_fd = openADC('0');
         setup_servo('1');
 
         pputs("/sys/class/gpio/gpio1/edge","falling");
@@ -93,17 +93,35 @@ int main(int argc,char *argv[])
 
                 servo_duty_cicle = (rad_angle/M_PI_2)*900000+1500000;
 
-                if(angle > 1.1*saved_angle)
+                if(angle > 0)
                 {
-                        lcd_backlight_set(lcd_fd, 255, 0, 0);
-                }
-                else if(angle < 0.9*saved_angle)
-                {
-                        lcd_backlight_set(lcd_fd, 255, 255, 0);
+                        if(angle > 1.1*saved_angle)
+                        {
+                                lcd_backlight_set(lcd_fd, 255, 0, 0);
+                        }
+                        else if(angle < 0.9*saved_angle)
+                        {
+                                lcd_backlight_set(lcd_fd, 255, 255, 0);
+                        }
+                        else
+                        {
+                                lcd_backlight_set(lcd_fd, 0, 255, 0);
+                        }
                 }
                 else
                 {
-                        lcd_backlight_set(lcd_fd, 0, 255, 0);
+                        if(angle > 0.9*saved_angle)
+                        {
+                                lcd_backlight_set(lcd_fd, 255, 0, 0);
+                        }
+                        else if(angle < 1.1*saved_angle)
+                        {
+                                lcd_backlight_set(lcd_fd, 255, 255, 0);
+                        }
+                        else
+                        {
+                                lcd_backlight_set(lcd_fd, 0, 255, 0);
+                        }
                 }
 
                 char str[100];
