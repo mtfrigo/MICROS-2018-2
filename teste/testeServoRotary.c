@@ -71,14 +71,14 @@ int main(int argc,char *argv[])
 
                 lcd_backlight_set(fd_lcd, rand(), rand(), rand());
 
-                angle=util_map(raw, 0, 4000, 0, 180) - 90  ;
+                angle=util_map(raw, 0, 4096, -90, 90);
                 if(angle > 90) angle = 90 *  M_PI/180.0;
                 else angle = angle *  M_PI/180.0;
-                duty_cycle=angle/M_PI_2*925000+1500000;
+                duty_cycle=angle/M_PI_2*900000+1500000;
                 snprintf(str,sizeof str,"%d\n",duty_cycle);
 
                 sprintf(angleStr, "Raw = %d; Max = 4000", raw);
-                snprintf(angleStr,sizeof angleStr,"%f; %f", util_map(raw, 0, 4000, 0, 180) - 90 , util_map(4000, 0, 4000, 0, 180));
+                snprintf(angleStr,sizeof angleStr,"%f; %f", util_map(raw, 0, 4096, -90, 90), util_map(4096, 0, 4096, -90, 90));
                 pputs("/sys/class/pwm/pwmchip0/pwm1/duty_cycle",str);
 
                 lcd_write_words(fd_lcd, rawStr, angleStr);
