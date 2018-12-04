@@ -1,10 +1,10 @@
 TARGET=servo_continuo
 SRCS=$(TARGET).c
 
-FLAGS=-O2 -Wall -g -MMD
+FLAGS=-Wall -g -MMD
 INCLUDE=-I. -I../../libgalileo2/include
 LIBDIR=-L../../libgalileo2
-LIBS=-lgalileo2
+LIBS=-lgalileo2 -lm
 
 CC=$(CROSS_COMPILE)gcc
 CFLAGS=$(FLAGS) $(INCLUDE)

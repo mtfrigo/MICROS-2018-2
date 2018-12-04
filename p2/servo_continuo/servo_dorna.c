@@ -19,7 +19,7 @@
 
 #include <linux/i2c-dev.h>
 
-#define DATA_POINTS 100
+#define DATA_POINTS 50
 #define SAMPLING_PERIOD 1e-3
 
 
@@ -43,10 +43,7 @@ void quit(int signal)
     run=0;
 }
 
-int main(int argc, char *argv[])
-{
-      read_pot();
-}
+
 
 
 int read_pot()
@@ -93,7 +90,7 @@ int read_pot()
   }
   
   
-  samples = read(fd,data,sizeof data)/sizeof(struct sensors);
+  samples = read(fd,data, sizeof (struct sensors)* DATA_POINTS )/sizeof(struct sensors);
   close(fd);
   printf("SAMPLES READ: %d\n", samples);
   

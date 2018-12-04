@@ -173,15 +173,15 @@ case "$1" in
 		## Begin of AD 1 ## 
 
 			# gpio51 = in = neither pull-up nor pull-down
-			if [ ! -d /sys/class/gpio/gpio51 ] ; then
-				echo -n "51" > /sys/class/gpio/export
-			fi
-			echo -n "in" > /sys/class/gpio/gpio51/direction
-				
-			chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage1_scale
-			chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage1_scale
-			chgrp adc /sys/bus/iio/devices/iio:device0/scan_elements/in_voltage1_en
-            chmod g+rw /sys/bus/iio/devices/iio:device0/scan_elements/in_voltage1_en
+		#	if [ ! -d /sys/class/gpio/gpio51 ] ; then
+		#		echo -n "51" > /sys/class/gpio/export
+		#	fi
+		#	echo -n "in" > /sys/class/gpio/gpio51/direction
+		#		
+		#	chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage1_scale
+		#	chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage1_scale
+		#	chgrp adc /sys/bus/iio/devices/iio:device0/scan_elements/in_voltage1_en
+        #    chmod g+rw /sys/bus/iio/devices/iio:device0/scan_elements/in_voltage1_en
 
 			 
 			
@@ -190,15 +190,15 @@ case "$1" in
 		## Begin of AD 2 ## 
 
 			# gpio53 = in = neither pull-up nor pull-down
-			if [ ! -d /sys/class/gpio/gpio53 ] ; then
-				echo -n "53" > /sys/class/gpio/export
-			fi
-			echo -n "in" > /sys/class/gpio/gpio53/direction
-				
-			chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage2_raw
-			chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage2_raw
-			chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage2_scale
-			chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage2_scale
+		#	if [ ! -d /sys/class/gpio/gpio53 ] ; then
+		#		echo -n "53" > /sys/class/gpio/export
+		#	fi
+		#	echo -n "in" > /sys/class/gpio/gpio53/direction
+		#		
+		#	chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage2_raw
+		#	chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage2_raw
+		#	chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage2_scale
+		#	chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage2_scale
 
 			
 			
@@ -207,15 +207,15 @@ case "$1" in
 		## Begin of AD 3 ## 
 
 			# gpio55 = in = neither pull-up nor pull-down
-			if [ ! -d /sys/class/gpio/gpio55 ] ; then
-				echo -n "55" > /sys/class/gpio/export
-			fi
-			echo -n "in" > /sys/class/gpio/gpio55/direction
-				
-			chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage3_raw
-			chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage3_raw
-			chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage3_scale
-			chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage3_scale
+		#	if [ ! -d /sys/class/gpio/gpio55 ] ; then
+		#		echo -n "55" > /sys/class/gpio/export
+		#	fi
+		#	echo -n "in" > /sys/class/gpio/gpio55/direction
+		#		
+		#	chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage3_raw
+		#	chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage3_raw
+		#	chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage3_scale
+		#	chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage3_scale
 			
 		## End of AD 3 ##
 
