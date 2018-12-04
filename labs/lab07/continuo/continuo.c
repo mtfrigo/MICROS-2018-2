@@ -33,7 +33,7 @@
 #define SAMPLING_PERIOD 1e-3
 
 /* Assumes the data format for Galileo Gen2 */
-struct sensors
+struct adc_sensors
 {
     uint16_t pot;		/* be:u12/16>>0 */
     uint16_t light;		/* be:u12/16>>0 */
@@ -47,7 +47,7 @@ int main(int argc,char * argv[])
     char data_str[80];
     double scale[4];
     int fd;
-    static struct sensors data[DATA_POINTS];
+    static struct adc_sensors data[DATA_POINTS];
     int i;
     int samples;
     FILE *file;
@@ -102,7 +102,7 @@ int main(int argc,char * argv[])
         return -1;
     }
     //Lê as amostras do sensores
-    samples=read(fd,data,sizeof data)/sizeof(struct sensors);
+    samples=read(fd,data,sizeof data)/sizeof(struct adc_sensors);
     close(fd);
 
     //Reseta o buffer

@@ -24,7 +24,7 @@
 
 
 /* Assumes the data format for Galileo Gen2 */
-struct sensors
+struct adc_sensors
 {
         uint16_t pot;		/* be:u12/16>>0 */
         int64_t timestamp;	/* le:s64/64>>0 */
@@ -49,7 +49,7 @@ void quit(int signal)
 int read_pot()
 {
   char data_str[80];
-  struct sensors data[100];
+  struct adc_sensors data[100];
   float scale;
   int samples;
   int fd;
@@ -90,7 +90,7 @@ int read_pot()
   }
   
   
-  samples = read(fd,data, sizeof (struct sensors)* DATA_POINTS )/sizeof(struct sensors);
+  samples = read(fd,data, sizeof (struct adc_sensors)* DATA_POINTS )/sizeof(struct adc_sensors);
   close(fd);
   printf("SAMPLES READ: %d\n", samples);
   
