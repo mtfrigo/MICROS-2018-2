@@ -84,25 +84,25 @@ case "$1" in
 		## Begin of IO6 ##
 		# As a output LED
 
-			#if [ ! -d /sys/class/gpio/gpio1 ] ; then
-			#	echo -n "1" > /sys/class/gpio/export
-			#fi
-			#echo -n "out" > /sys/class/gpio/gpio1/direction
-			#
-			#
-			#if [ ! -d /sys/class/gpio/gpio20 ] ; then
-			#	echo -n "20" > /sys/class/gpio/export
-			#fi
-			#echo -n "out" > /sys/class/gpio/gpio20/direction
-			#echo -n "0" > /sys/class/gpio/gpio20/value
-			#
-			#if [ ! -d /sys/class/gpio/gpio68 ] ; then
-			#	echo -n "68" > /sys/class/gpio/export
-			#fi
-			#echo -n "0" > /sys/class/gpio/gpio68/value
-			#
-			#chgrp gpio /sys/class/gpio/gpio1/value
-			##chmod g+rw /sys/class/gpio/gpio1/value
+			if [ ! -d /sys/class/gpio/gpio1 ] ; then
+				echo -n "1" > /sys/class/gpio/export
+			fi
+			echo -n "out" > /sys/class/gpio/gpio1/direction
+			
+			
+			if [ ! -d /sys/class/gpio/gpio20 ] ; then
+				echo -n "20" > /sys/class/gpio/export
+			fi
+			echo -n "out" > /sys/class/gpio/gpio20/direction
+			echo -n "0" > /sys/class/gpio/gpio20/value
+			
+			if [ ! -d /sys/class/gpio/gpio68 ] ; then
+				echo -n "68" > /sys/class/gpio/export
+			fi
+			echo -n "0" > /sys/class/gpio/gpio68/value
+			
+			chgrp gpio /sys/class/gpio/gpio1/value
+			chmod g+rw /sys/class/gpio/gpio1/value
 
 
 		## End of IO6 ##
@@ -141,10 +141,32 @@ case "$1" in
 			fi
 			echo -n "in" > /sys/class/gpio/gpio49/direction
 				
-			chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage0_raw
-			chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage0_raw
-			chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage0_scale
+			chgrp p2micros /sys/bus/iio/devices/iio:device0/in_voltage0_scale
 			chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage0_scale
+			
+			chgrp p2micros /sys/bus/iio/devices/iio:device0/scan_elements/in_voltage0_en
+			chmod g+rw /sys/bus/iio/devices/iio:device0/scan_elements/in_voltage0_en
+
+
+			chgrp p2micros /sys/bus/iio/devices/iio:device0/scan_elements/in_timestamp_en
+			chmod g+rw /sys/bus/iio/devices/iio:device0/scan_elements/in_timestamp_en
+			
+			chgrp p2micros /sys/bus/iio/devices/iio:device0/buffer/enable
+			chmod g+rw /sys/bus/iio/devices/iio:device0/buffer/enable
+			chgrp p2micros /sys/bus/iio/devices/iio:device0/buffer/length
+			chmod g+rw /sys/bus/iio/devices/iio:device0/buffer/length
+				
+			modprobe iio-trig-hrtimer
+			echo -n "0" > /sys/bus/iio/devices/iio_hrtimer_trigger/add_trigger
+			
+			chgrp p2micros /sys/bus/iio/devices/trigger0/frequency
+			chmod g+rw /sys/bus/iio/devices/trigger0/frequency
+			
+			chgrp p2micros /sys/bus/iio/devices/iio:device0/trigger/current_trigger
+			chmod g+rw /sys/bus/iio/devices/iio:device0/trigger/current_trigger
+			
+			chgrp p2micros /dev/iio:device0
+			chmod g+r /dev/iio:device0
 			
 		## End of AD 0 ##
 
@@ -156,10 +178,12 @@ case "$1" in
 			fi
 			echo -n "in" > /sys/class/gpio/gpio51/direction
 				
-			chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage1_raw
-			chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage1_raw
 			chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage1_scale
 			chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage1_scale
+			chgrp adc /sys/bus/iio/devices/iio:device0/scan_elements/in_voltage1_en
+            chmod g+rw /sys/bus/iio/devices/iio:device0/scan_elements/in_voltage1_en
+
+			 
 			
 		## End of AD 1 ##
 
@@ -175,6 +199,8 @@ case "$1" in
 			chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage2_raw
 			chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage2_scale
 			chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage2_scale
+
+			
 			
 		## End of AD 2 ##
 
@@ -255,6 +281,15 @@ case "$1" in
 
 		## Begin of AD 0 ## 
 			echo -n "49" > /sys/class/gpio/unexport
+
+			# Begin of Continuous 
+				echo "\n" > /sys/bus/iio/devices/iio:device0/trigger/current_trigger
+	
+				echo -n "0" > /sys/bus/iio/devices/iio_hrtimer_trigger/remove_trigger
+				rmmod iio-trig-hrtimer
+
+			# End of continuous 
+
 		## End of AD 0 ## 
 
 		## Begin of AD 1 ## 
@@ -293,6 +328,8 @@ case "$1" in
 			cat /sys/class/pwm/pwmchip0/pwm1/duty_cycle
 			echo -n Enable:
 			cat /sys/class/pwm/pwmchip0/pwm1/enable
+
+			cat /sys/bus/iio/devices/iio:device0/trigger/current_trigger
 		## End of IO3 (pwm1) ##
 	;;
     *)

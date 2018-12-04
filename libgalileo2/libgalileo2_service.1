@@ -147,10 +147,35 @@ case "$1" in
 			fi
 			echo -n "in" > /sys/class/gpio/gpio49/direction
 				
-			chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage0_raw
-			chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage0_raw
+			##chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage0_raw
+			##chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage0_raw
 			chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage0_scale
 			chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage0_scale
+
+
+			## Begin of continuous  
+			chgrp adc /sys/bus/iio/devices/iio:device0/scan_elements/in_timestamp_en
+			chmod g+rw /sys/bus/iio/devices/iio:device0/scan_elements/in_timestamp_en
+
+			
+			chgrp adc /sys/bus/iio/devices/iio:device0/buffer/enable
+			chmod g+rw /sys/bus/iio/devices/iio:device0/buffer/enable
+			chgrp adc /sys/bus/iio/devices/iio:device0/buffer/length
+			chmod g+rw /sys/bus/iio/devices/iio:device0/buffer/length
+
+
+			modprobe iio-trig-hrtimer
+			echo -n "0" > /sys/bus/iio/devices/iio_hrtimer_trigger/add_trigger
+			
+			chgrp adc /sys/bus/iio/devices/trigger0/frequency
+			chmod g+rw /sys/bus/iio/devices/trigger0/frequency
+			
+			chgrp adc /sys/bus/iio/devices/iio:device0/trigger/current_trigger
+			chmod g+rw /sys/bus/iio/devices/iio:device0/trigger/current_trigger
+			
+			chgrp adc /dev/iio:device0
+			chmod g+r /dev/iio:device0
+			## End of continuous 
 			
 		## End of AD 0 ##
 
