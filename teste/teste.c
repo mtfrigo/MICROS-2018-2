@@ -52,7 +52,9 @@ int main(int argc,char *argv[])
         scale = getScale(data_str);
 
         // Period for all pwm
-        setPeriod("20000000");
+        // 20.000.000 = 20ms x 10`-3 (nano)
+        // 
+        setPeriod("1000000");
 
         enablePWM(pwmId);
 
@@ -84,7 +86,7 @@ int main(int argc,char *argv[])
 
                 lcd_write_words(fd_lcd, rawStr, angleStr);
 
-                sleep(1);
+                sleep(0.5);
         }
 
         close(fd);
