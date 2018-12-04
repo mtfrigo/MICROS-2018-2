@@ -133,22 +133,9 @@ case "$1" in
 
 		## End of IO6 ##
 
-		## Begin of AD 0 ## 
+		## Begin of continuous stuff
 
-			# gpio49 = in = neither pull-up nor pull-down
-			if [ ! -d /sys/class/gpio/gpio49 ] ; then
-				echo -n "49" > /sys/class/gpio/export
-			fi
-			echo -n "in" > /sys/class/gpio/gpio49/direction
-				
-			chgrp p2micros /sys/bus/iio/devices/iio:device0/in_voltage0_scale
-			chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage0_scale
-			
-			chgrp p2micros /sys/bus/iio/devices/iio:device0/scan_elements/in_voltage0_en
-			chmod g+rw /sys/bus/iio/devices/iio:device0/scan_elements/in_voltage0_en
-
-
-			chgrp p2micros /sys/bus/iio/devices/iio:device0/scan_elements/in_timestamp_en
+			hgrp p2micros /sys/bus/iio/devices/iio:device0/scan_elements/in_timestamp_en
 			chmod g+rw /sys/bus/iio/devices/iio:device0/scan_elements/in_timestamp_en
 			
 			chgrp p2micros /sys/bus/iio/devices/iio:device0/buffer/enable
@@ -167,21 +154,52 @@ case "$1" in
 			
 			chgrp p2micros /dev/iio:device0
 			chmod g+r /dev/iio:device0
+
+		## End of continuous stuff
+
+		## Begin of AD 0 ## 
+
+			 #gpio49 = in = neither pull-up nor pull-down
+			if [ ! -d /sys/class/gpio/gpio49 ] ; then
+				echo -n "49" > /sys/class/gpio/export
+			fi
+			echo -n "in" > /sys/class/gpio/gpio49/direction
+
+
+			chgrp p2micros /sys/bus/iio/devices/iio:device0/in_voltage0_scale
+			chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage0_scale
+				
+			#	Continuous
+			chgrp p2micros /sys/bus/iio/devices/iio:device0/scan_elements/in_voltage0_en
+			chmod g+rw /sys/bus/iio/devices/iio:device0/scan_elements/in_voltage0_en
+
+			# 	One-shot
+			#chgrp adc /sys/bus/iio/devices/iio:device0/scan_elements/in_voltage0_en
+			#chmod g+rw /sys/bus/iio/devices/iio:device0/scan_elements/in_voltage0_en
+
+
+			
 			
 		## End of AD 0 ##
 
 		## Begin of AD 1 ## 
 
 			# gpio51 = in = neither pull-up nor pull-down
-		#	if [ ! -d /sys/class/gpio/gpio51 ] ; then
-		#		echo -n "51" > /sys/class/gpio/export
-		#	fi
-		#	echo -n "in" > /sys/class/gpio/gpio51/direction
-		#		
-		#	chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage1_scale
-		#	chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage1_scale
-		#	chgrp adc /sys/bus/iio/devices/iio:device0/scan_elements/in_voltage1_en
-        #    chmod g+rw /sys/bus/iio/devices/iio:device0/scan_elements/in_voltage1_en
+			if [ ! -d /sys/class/gpio/gpio51 ] ; then
+				echo -n "51" > /sys/class/gpio/export
+			fi
+			echo -n "in" > /sys/class/gpio/gpio51/direction
+
+			chgrp p2micros /sys/bus/iio/devices/iio:device0/in_voltage1_scale
+			chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage1_scale
+				
+			#	Continuous
+			chgrp p2micros /sys/bus/iio/devices/iio:device0/scan_elements/in_voltage1_en
+			chmod g+rw /sys/bus/iio/devices/iio:device0/scan_elements/in_voltage1_en
+
+			# 	One-shot
+			#	chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage1_raw
+			#	chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage1_raw
 
 			 
 			
@@ -189,12 +207,14 @@ case "$1" in
 
 		## Begin of AD 2 ## 
 
-			# gpio53 = in = neither pull-up nor pull-down
+		#	# gpio53 = in = neither pull-up nor pull-down
 		#	if [ ! -d /sys/class/gpio/gpio53 ] ; then
 		#		echo -n "53" > /sys/class/gpio/export
 		#	fi
 		#	echo -n "in" > /sys/class/gpio/gpio53/direction
-		#		
+
+			
+				
 		#	chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage2_raw
 		#	chmod g+r /sys/bus/iio/devices/iio:device0/in_voltage2_raw
 		#	chgrp adc /sys/bus/iio/devices/iio:device0/in_voltage2_scale

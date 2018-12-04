@@ -10,7 +10,7 @@
 #include <math.h>
 
 
-double get_avg(struct sensors data[], int length)
+double adc0_get_avg(struct sensors data[], int length)
 {
 	double avg = 0;
 	int i;
@@ -23,7 +23,20 @@ double get_avg(struct sensors data[], int length)
   	return avg/length;
 }
 
-double get_std_deviation(struct sensors data[], int length, double avg, float scale)
+double adc1_get_avg(struct sensors data[], int length)
+{
+	double avg = 0;
+	int i;
+
+	for(i=0;i < length; i++) 
+	{
+    	avg += bswap_16(data[i].adc1_raw);
+  	}
+
+  	return avg/length;
+}
+
+double adc0_get_std_deviation(struct sensors data[], int length, double avg, float scale)
 {
 	double std_deviation = 0;
 	int i;
@@ -31,6 +44,21 @@ double get_std_deviation(struct sensors data[], int length, double avg, float sc
 	for(i=0;i < length; i++) 
 	{
     	std_deviation += (bswap_16(data[i].adc0_raw) * scale - avg * scale) * (bswap_16(data[i].adc0_raw) * scale - avg * scale) ;
+  	}
+
+	std_deviation = sqrt(std_deviation/length);
+
+  	return std_deviation;
+}
+
+double adc1_get_std_deviation(struct sensors data[], int length, double avg, float scale)
+{
+	double std_deviation = 0;
+	int i;
+
+	for(i=0;i < length; i++) 
+	{
+    	std_deviation += (bswap_16(data[i].adc1_raw) * scale - avg * scale) * (bswap_16(data[i].adc1_raw) * scale - avg * scale) ;
   	}
 
 	std_deviation = sqrt(std_deviation/length);

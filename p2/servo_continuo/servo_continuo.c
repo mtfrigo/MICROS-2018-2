@@ -43,15 +43,17 @@ void setup_servo(char pwmId)
 
 int main(int argc, char *argv[])
 {
-  float avg, avg_raw;
-  float std;
+  float avg[2], avg_raw[2];
+  float std[2];
 
-int servo_duty_cicle;
+  int servo_duty_cicle;
+
+
 
   
   char data_str[80];
   struct sensors data[DATA_POINTS];
-  float scale;
+  float scale[2];
   int samples;
   int fd;
 
@@ -64,17 +66,21 @@ int servo_duty_cicle;
   lcd_backlight_set(lcd_fd, 255, 255, 255);
 
 
-
   //Desliga o buffer para fazer a configuração
   pputs("/sys/bus/iio/devices/iio:device0/buffer/enable","0");
 
   //Pega o scale do adc 0
   pgets(data_str, sizeof data_str, "/sys/bus/iio/devices/iio:device0/in_voltage0_scale");
-  scale = atof(data_str)/1000.0;
+  scale[0] = atof(data_str)/1000.0;
+
+  pgets(data_str, sizeof data_str, "/sys/bus/iio/devices/iio:device0/in_voltage1_scale");
+  scale[1] = atof(data_str)/1000.0;
+
+  printf("scale 0: %f; scale 1: %f; ", scale[0], scale[1]);
   
   //Dá o enable no canal 0
   pputs("/sys/bus/iio/devices/iio:device0/scan_elements/in_voltage0_en", "1");
-  pputs("/sys/bus/iio/devices/iio:device0/scan_elements/in_voltage1_en", "0");
+  pputs("/sys/bus/iio/devices/iio:device0/scan_elements/in_voltage1_en", "1");
   pputs("/sys/bus/iio/devices/iio:device0/scan_elements/in_voltage2_en", "0");
   pputs("/sys/bus/iio/devices/iio:device0/scan_elements/in_voltage3_en", "0");
   
@@ -119,25 +125,36 @@ int servo_duty_cicle;
 
     lseek(fd, 0, SEEK_SET);
     
-    avg_raw = get_avg(data, samples);
-    avg = avg_raw * scale;
-    std = get_std_deviation(data, samples, avg_raw, scale);
+    avg_raw[0] = adc0_get_avg(data, samples);
+    avg[0] = avg_raw[0] * scale[0];
+    std[0] = adc0_get_std_deviation(data, samples, avg_raw[0], scale[0]);
 
-    float angle = util_map(avg_raw, 0, 4096, -90, 90);
-    float rad_angle = (angle * M_PI)/180;
+    avg_raw[1] = adc1_get_avg(data, samples);
+    avg[1] = avg_raw[1] * scale[1];
+    std[1] = adc1_get_std_deviation(data, samples, avg_raw[1], scale[1]);
+
+    float angle[2];
+    angle[0] = util_map(avg_raw[0], 0, 4096, -90, 90);
+    angle[1] = util_map(avg_raw[1], 0, 4096, -90, 90);
+
+    float rad_angle[2] ;
+    rad_angle[0] = (angle[0] * M_PI)/180;
+    rad_angle[1] = (angle[1] * M_PI)/180;
     
-    servo_duty_cicle = (rad_angle/M_PI_2)*900000+1500000;
+    servo_duty_cicle = (rad_angle[0]/M_PI_2)*900000+1500000;
 
     char str[100];
     snprintf(str,sizeof str,"%d\n", servo_duty_cicle);
     setDutycycle(str, '1');
 
-    snprintf(lcd_values, sizeof lcd_values, "%.4f;%.4f", avg, std);
-    snprintf(lcd_position, sizeof lcd_position, "%.2f;%.2f", angle, rad_angle);
+    //snprintf(lcd_values, sizeof lcd_values, "%.4f;%.4f", avg, std);
+    snprintf(lcd_values, sizeof lcd_values, "%.4f;%.4f", avg[0], avg[1]);
+    snprintf(lcd_position, sizeof lcd_position, "%.2f;%.2f", angle[0], rad_angle[0]);
 
     lcd_write_words(lcd_fd, lcd_values, lcd_position);
 
-    printf("Values: %lf\t%lf\t%lf\n", avg_raw, avg, std);
+    printf("Values 1: %lf\t%lf\t%lf\n", avg_raw[0], avg[0], std[0]);
+    printf("Values 2: %lf\t%lf\t%lf\n", avg_raw[1], avg[1], std[1]);
 
 
 
@@ -149,6 +166,7 @@ int servo_duty_cicle;
   pputs("/sys/bus/iio/devices/iio:device0/buffer/length","2");
   //Desabilita canal 0
   pputs("/sys/bus/iio/devices/iio:device0/scan_elements/in_voltage0_en","0");
+  pputs("/sys/bus/iio/devices/iio:device0/scan_elements/in_voltage1_en","0");
   //Reseta a timestamp
   pputs("/sys/bus/iio/devices/iio:device0/scan_elements/in_timestamp_en","0");
 

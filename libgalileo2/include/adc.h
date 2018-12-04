@@ -17,7 +17,11 @@ struct sensors
 int getRawScale(char *data, char n);
 double getScale(char *data);
 int openADC(char id);
-double get_avg(struct sensors data[], int length);
-double get_std_deviation(struct sensors data[], int length, double avg, float scale);
+
+double adc0_get_avg(struct sensors data[], int length);
+double adc1_get_avg(struct sensors data[], int length);
+
+double adc0_get_std_deviation(struct sensors data[], int length, double avg, float scale);
+double adc1_get_std_deviation(struct sensors data[], int length, double avg, float scale);
 
 #endif
