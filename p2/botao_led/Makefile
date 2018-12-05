@@ -1,4 +1,4 @@
-TARGET=despertador
+TARGET=botao_led
 SRCS=$(TARGET).c
 
 FLAGS=-O2 -Wall -g -MMD

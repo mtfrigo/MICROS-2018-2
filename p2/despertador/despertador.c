@@ -51,6 +51,8 @@ int main(int argc,char *argv[])
         unsigned char b_value;
         struct pollfd b_pfd;
 
+        char adcId = '2';
+
         if((b_pfd.fd=open("/sys/class/gpio/gpio1/value",O_RDONLY)) < 0)
         {
                 perror("Opening gpio1:");
@@ -68,7 +70,7 @@ int main(int argc,char *argv[])
         lcd_backlight_init(fd_lcd);
         lcd_backlight_set(fd_lcd, 255, 255, 255);
 
-        p_fd = openADC('1');
+        p_fd = openADC(adcId);
         setup_buzzer('1');
 
         pputs("/sys/class/gpio/gpio1/edge","falling");
