@@ -32,13 +32,13 @@ void quit(int signal)
 
 void setup_servo(char pwmId)
 {
-        enablePWM(pwmId);
-        setPeriod("20000000");
-
-        char str[100];
-
-        snprintf(str,sizeof str,"%d\n", 1500000);
-        setDutycycle(str, pwmId);
+  enablePWM(pwmId);
+  setPeriod("20000000");
+  
+  char str[100];
+  
+  snprintf(str,sizeof str,"%d\n", 1500000);
+  setDutycycle(str, pwmId);
 }
 
 int main(int argc, char *argv[])
